@@ -1,6 +1,8 @@
+![](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUhaHzwCLwHZ2bIa3QvFKfDHfJ8om02swnRa2b_Cn8VmW_fjjPTA)
+
 # TypeScript Blockchain
 
-Hey, this is a simple blockchain showcase implemented in TypeScript
+Hey, this is a simple blockchain showcase implemented in TypeScript. It supports mutations and simple proof-of-concept
 
 ### Get Started
 
@@ -12,4 +14,3 @@ Hey, this is a simple blockchain showcase implemented in TypeScript
 ### Limitations
 
 - No P2P support as now
-- No mutations
