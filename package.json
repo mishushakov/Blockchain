@@ -1,0 +1,18 @@
+{
+  "name": "blockchain",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Ushakov",
+  "license": "MIT",
+  "dependencies": {
+    "@types/crypto-js": "^3.1.38",
+    "crypto-js": "^3.1.9-1",
+    "nodemon": "^1.14.11",
+    "ts-node": "^4.1.0",
+    "typescript": "^2.6.2"
+  },
+  "scripts": {
+    "dev": "nodemon",
+    "build": "tsc"
+  }
+}
