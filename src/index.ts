@@ -1,10 +1,6 @@
 import { BlockChain } from './blockchain'
 
-let blockchain = new BlockChain() // <- create the blockchain
+const blockchain = new BlockChain(8888) // <- create the blockchain and serve it online over 8888, set 0 if you doesn't want to serve it
 
-let testblock =  blockchain.newBlock('Hello') // <- generate block with message
-testblock.remove() // <- remove the block
-
-blockchain.newBlock('World')
-
-console.log('Blockchain', blockchain)
+blockchain.newBlock("Hello Welt")
+console.log('Blockchain', blockchain.chain)

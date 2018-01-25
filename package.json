@@ -6,7 +6,9 @@
   "license": "MIT",
   "dependencies": {
     "@types/crypto-js": "^3.1.38",
-    "crypto-js": "^3.1.9-1"
+    "@types/socket.io": "^1.4.31",
+    "crypto-js": "^3.1.9-1",
+    "socket.io": "^2.0.4"
   },
   "scripts": {
     "dev": "nodemon",
@@ -14,9 +16,9 @@
     "test": "typedoc --hideGenerator --name Blockchain --out ./docs ./src"
   },
   "devDependencies": {
-    "typedoc": "^0.9.0",
     "nodemon": "^1.14.11",
     "ts-node": "^4.1.0",
+    "typedoc": "^0.9.0",
     "typescript": "^2.6.2"
   }
 }

@@ -1,12 +1,31 @@
 import { Block } from './block'
 
+import * as http from 'http'
+import * as socketio from 'socket.io'
+
 export class BlockChain {
     difficulty: number // <- we won't use it
     chain: Array<Block>
+    online: boolean // <- set bool if the app serves over a peer
 
-    constructor(){
+    app: http.Server
+    peer: SocketIO.Server
+
+    constructor(public port: number){
         this.difficulty = 5
         this.chain = [this.generateGenesis()]
+
+        this.online = false
+        this.port = port
+        this.peer
+
+        if(this.port != 0){
+            this.app = http.createServer()
+            this.peer = socketio(this.app)
+            this.app.listen(this.port)
+            this.online = true
+            this.connectHooks()
+        }
     }
 
     generateGenesis = () => {
@@ -20,6 +39,7 @@ export class BlockChain {
         let genBlock = new Block(index, data, "generated-block", previousHash) // <- generate new block
 
         this.proof(genBlock) // <- proof-of-concept
+        this.sendUpdate() // <- send update, only if you are serving online
 
         return genBlock
     }
@@ -46,6 +66,8 @@ export class BlockChain {
 
         if (index > -1 && index !== 0){
             this.chain[index].removed = true // <- virtually remove block by hash
+            this.sendUpdate()
+
             return hash
         }
         else {
@@ -54,8 +76,14 @@ export class BlockChain {
         }
     }
 
+    getBlockByHash = (hash: string) => {
+        let index = this.chain.findIndex(b => b.hash === hash)
+
+        return this.chain[index]
+    }
+
     getChain = () => {
-        let valid_chain: Array<Block> = [] // <- temporary stoarage for valid blocks
+        let valid_chain: Array<Block> = [] // <- temporary store valid blocks
 
         this.chain.forEach((block: Block, index: number) => {
             if(block.removed == false && block.valid == true) {valid_chain.push(block)}
@@ -73,5 +101,27 @@ export class BlockChain {
         })
 
         return valid_chain // <- return valid chain
+    }
+
+    connectHooks = () => {
+        this.peer.on('connection', (socket: SocketIO.Socket) => {
+            socket.emit('update', {full_chain: this.chain, valid_chain: this.getChain()})
+
+            socket.on('new_block', (data: any) => {
+                this.newBlock(data.data)
+            })
+
+            socket.on('remove_block', (data: any) => {
+                this.removeBlockByHash(data.hash)
+            })
+
+            socket.on('get_block', (data: any) => {
+                socket.emit('get_result', {block: this.getBlockByHash(data.hash)})
+            })
+        })
+    }
+
+    sendUpdate = () => {
+        if (this.online == true) this.peer.emit('update', {full_chain: this.chain, valid_chain: this.getChain()})
     }
 }

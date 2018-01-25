@@ -1,0 +1,14 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.slim.js"></script>
+<script>
+	const socket = io('http://localhost:8888')
+	socket.on('update', (data) => {
+		console.log(data)
+	})
+
+	add = () => {
+		socket.emit('new_block', {data: 'Hello World'})
+	}
+</script>
+<body>
+	<button onclick="add()">Add block</button>
+</body>
