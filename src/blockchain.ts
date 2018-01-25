@@ -2,10 +2,15 @@ import { Block } from './block'
 
 export class BlockChain {
     difficulty: number // <- we won't use it
+    chain: Array<Block>
 
-    constructor(public chain: Array<Block>){
+    constructor(){
         this.difficulty = 5
-        this.chain = chain
+        this.chain = [this.generateGenesis()]
+    }
+
+    generateGenesis = () => {
+        return new Block(0, "Genesis Block", "genesis-block", null) // <- create so-called genesis-block(the first block in the chain)
     }
 
     newBlock = (data: any) => {
